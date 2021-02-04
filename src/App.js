@@ -12,7 +12,7 @@ const securing = {
 };
 
 function App() {
-  const [membersAPI, setMembersAPI] = useState([]);
+  let [membersAPI, setMembersAPI] = useState([]);
   let [usersAPI, setUsersAPI] = useState([]);
 
   const getMembers = () => {
@@ -23,19 +23,23 @@ function App() {
       .then((res) => {
         setMembersAPI(res.data);
       });
+    console.log(membersAPI)
     let userName = membersAPI.map((e) => {
       return e.login;
     });
-    userName.forEach((e) => {
-      axios
-        .get(
-          `${securing.baseUrl}/users/${e}?client_id=${securing.client_id}&client_secret=${securing.client_secret}`
-        )
-        .then((response) => {
-          console.log(response.data);
-          setUsersAPI((state) => [...state, response.data]);
-        });
-    });
+    if(membersAPI){
+      userName.forEach((e) => {
+        axios
+          .get(
+            `${securing.baseUrl}/users/${e}?client_id=${securing.client_id}&client_secret=${securing.client_secret}`
+          )
+          .then((response) => {
+            setUsersAPI((state) => [...state, response.data]);
+          });
+      });
+    }else{
+      return <h1>Carregando...</h1>
+    }
   };
 
   useEffect(getMembers, []); // eslint-disable-line react-hooks/exhaustive-deps
