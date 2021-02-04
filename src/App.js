@@ -4,6 +4,7 @@ import Header from "./components/Menu";
 import { useState, useEffect } from "react";
 import axios from "axios";
 
+// cadastro de app no GitHub para não exceder número de requisições
 const securing = {
   baseUrl: "https://api.github.com",
   client_id: "Iv1.7e879e2f04f15fc8",

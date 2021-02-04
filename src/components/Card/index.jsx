@@ -29,6 +29,11 @@ const Cardi = styled.div`
   padding: 20px;
   color: #57727c;
 
+.card_avatar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 .card_avatar img {
   width: 8em;
 }
@@ -52,6 +57,7 @@ const Cardi = styled.div`
 
 .login{
   width: 100%;
+  border-right: 2px solid black;
 }
 
 .nome {
@@ -70,4 +76,16 @@ const Cardi = styled.div`
   margin-bottom: 8px ;
   padding: 5px;
 }
-`
+
+@media (max-width: 600px) {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  box-sizing: border-box;
+
+  .card_description {
+    margin: 5px;
+  }
+}
+`;
