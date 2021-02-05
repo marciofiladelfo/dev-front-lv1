@@ -1,42 +1,29 @@
-import styled from "styled-components";
 import Card from "./components/Card";
 import Header from "./components/Menu";
 import { useState, useEffect } from "react";
 import axios from "axios";
-
+import {Home} from "./style"
 
 const baseUrl = "https://api.github.com";
-
 
 function App() {
   let [membersAPI, setMembersAPI] = useState([]);
   let [usersAPI, setUsersAPI] = useState([]);
 
   const getMembers = () => {
-    axios
-      .get(
-        `${baseUrl}/orgs/aws/members`
-      )
-      .then((res) => {
-        setMembersAPI(res.data);
-      });
-    console.log(membersAPI)
-     let userName = membersAPI.map((e) => {
+    axios.get(`${baseUrl}/orgs/aws/members`).then((res) => {
+      setMembersAPI(res.data);
+    });
+    console.log(membersAPI);
+    let userName = membersAPI.map((e) => {
       return e.login;
     });
-    if(membersAPI){
-      userName.forEach((e) => {
-        axios
-          .get(
-            `${baseUrl}/users/${e}`
-          )
-          .then((response) => {
-            setUsersAPI((state) => [...state, response.data]);
-          });
+    console.log(userName)
+    userName.forEach((e) => {
+      axios.get(`${baseUrl}/users/${e}`).then((response) => {
+        setUsersAPI((state) => [...state, response.data]);
       });
-    }else{
-      return <h1>Carregando...</h1>
-    }
+    });
   };
 
   useEffect(getMembers, []); // eslint-disable-line react-hooks/exhaustive-deps
@@ -61,14 +48,3 @@ function App() {
 }
 
 export default App;
-
-const Home = styled.div`
-  text-align: center;
-  background-color: #282c34;
-  min-height: 100vh;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  font-size: calc(10px + 2vmin);
-  color: #f0f8ff;
-`;
