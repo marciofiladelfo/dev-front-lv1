@@ -10,23 +10,21 @@ function App() {
   let [membersAPI, setMembersAPI] = useState([]);
   let [usersAPI, setUsersAPI] = useState([]);
 
-  const getMembers = () => {
-    axios.get(`${baseUrl}/orgs/aws/members`).then((res) => {
-      setMembersAPI(res.data);
-    });
-    console.log(membersAPI);
-    let userName = membersAPI.map((e) => {
+  const getMembers = async () => {
+    let res = await axios.get(`${baseUrl}/orgs/aws/members`)
+    setMembersAPI(await res.data.map((e) => {
       return e.login;
-    });
-    console.log(userName)
-    userName.forEach((e) => {
-      axios.get(`${baseUrl}/users/${e}`).then((response) => {
-        setUsersAPI((state) => [...state, response.data]);
-      });
+    }));
+  };
+  const getUsers = async () => {
+    membersAPI.forEach( async (e) => {
+      let res = await axios.get(`${baseUrl}/users/${e}`)
+        setUsersAPI((state) => [...state, res.data]);
     });
   };
 
-  useEffect(getMembers, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {getMembers()}, []); // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => {getUsers()}, [membersAPI]); // eslint-disable-line react-hooks/exhaustive-deps
 
   return (
     <Home>
